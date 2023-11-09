@@ -1,3 +1,5 @@
+https://github.com/russhughes/st7789_mpy
+
 wio_terminal:  configs/wio_terminal/tft_config.wio.py configs/wio_terminal/tft_config.wio.py
 # SCK   LCD_SCK       PB20
 # MOSI  LCD_MOSI      PB19
