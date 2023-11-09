@@ -10,8 +10,7 @@
 #
 # Blocking version
 # - the write() method blocks until the entire sample buffer is written to I2S
-
-import os
+# https://github.com/miketeachman/micropython-i2s-examples/tree/master/examples
 import math
 import struct
 from machine import I2S
@@ -43,7 +42,7 @@ def make_tone(rate, bits, frequency):
 # ======= I2S CONFIGURATION =======
 SCK_PIN = 6
 WS_PIN = 7
-SD_PIN = 8
+SD_PIN = 3  # GPIO8 conflicts with SD Card SPI
 I2S_ID = 0
 BUFFER_LENGTH_IN_BYTES = 2000
 # ======= I2S CONFIGURATION =======
@@ -53,7 +52,7 @@ BUFFER_LENGTH_IN_BYTES = 2000
 TONE_FREQUENCY_IN_HZ = 440
 SAMPLE_SIZE_IN_BITS = 16
 FORMAT = I2S.MONO  # only MONO supported in this example
-SAMPLE_RATE_IN_HZ = 44_100
+SAMPLE_RATE_IN_HZ = 16000  #  44_100
 # ======= AUDIO CONFIGURATION =======
 
 audio_out = I2S(
@@ -68,6 +67,8 @@ audio_out = I2S(
     ibuf=BUFFER_LENGTH_IN_BYTES,
 )
 
+print(audio_out)
+
 samples = make_tone(SAMPLE_RATE_IN_HZ, SAMPLE_SIZE_IN_BITS, TONE_FREQUENCY_IN_HZ)
 
 # continuously write tone sample buffer to an I2S DAC
@@ -81,4 +82,4 @@ except (KeyboardInterrupt, Exception) as e:
 
 # cleanup
 audio_out.deinit()
-print("Done")
+print("Done playing")
