@@ -5,6 +5,15 @@ import sys
 import machine
 import os
 
+try:
+    from flashbdev import bdev
+
+    fstype = bdev.info()[4]
+    del bdev
+except:
+    fstype = "vfs (default)"
+
+
 knownmcu = False
 try:
     import samd as mcu
@@ -39,6 +48,26 @@ print("--- Sys Info ---")
 print("  platform:       ", sys.platform)
 print("  version:        ", sys.version)
 print("  implementation: ", sys.implementation)
+sys_mpy = sys.implementation._mpy
+arch = [
+    None,
+    "x86",
+    "x64",
+    "armv6",
+    "armv6m",
+    "armv7m",
+    "armv7em",
+    "armv7emsp",
+    "armv7emdp",
+    "xtensa",
+    "xtensawin",
+][sys_mpy >> 10]
+print("    mpy version:", sys_mpy & 0xFF)
+print("    mpy sub-version:", sys_mpy >> 8 & 3)
+print("    mpy flags:", end="")
+if arch:
+    print(" -march=" + arch, end="")
+print()
 print("  path:           ", sys.path)
 try:
     print("  unique_id:      ", machine.unique_id())
@@ -63,12 +92,14 @@ else:
 #          nfree blocks, blkavail,
 #          ninodes, nfree inodes,
 #          navail inodes, mountflgs, maxfnamelength
-fsstats = os.statvfs("/")
+cdir = os.getcwd()
+fsstats = os.statvfs(cdir)
 print(
-    "\n--- FileSyst: Size={}   Free={}".format(
-        fsstats[0] * fsstats[2], fsstats[0] * fsstats[3]
+    "\n--- {} FileSyst: Size={}   Free={}   Type: {}".format(
+        cdir, fsstats[0] * fsstats[2], fsstats[0] * fsstats[3], fstype
     )
 )
+
 # check a file/directory
 #  0: file type
 #  1: inode (???)
