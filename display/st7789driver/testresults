@@ -1,0 +1,89 @@
+wio_terminal:  configs/wio_terminal/tft_config.wio.py configs/wio_terminal/tft_config.wio.py
+# SCK   LCD_SCK       PB20
+# MOSI  LCD_MOSI      PB19
+# MISO  not used      PB18
+# RST   LCD_RESET     PC07
+# CS    LCD_CS        PB21
+# DC    LCD_D_C       PC06
+# BKLT  LCD_BACKLIGHT PC05  aka LED_LCD 
+      hello/hellox, tiny_toasters, roids (with buttons), feathers, scroll
+         among others work,
+
+tinys3: configs/tinys3/tft_config.tinys3.py
+# TINY S3 Pins  SPI_SS is GPIO34 slave select sent by master, paired with CS?
+# SCK      Pin  3     Pin(36) SPI_SCK
+# MOSI     Pin  1     Pin(35) SPI_MOSI
+# MISO     Pin  2     Pin(37) SPI_MISO
+# RST      Pin  5     Pin(9)  I2C_SDA  labled wrong?
+# CS       Pin  6     Pin(8)  I2C_SCL  labled wrong?
+# DC       Pin  7     Pin(7)
+# BKLT     Pin  8     Pin(6)
+      hello/hellox, tiny_toasters, among others work
+      feathers mostly works but has a rectangular noise blip
+      scroll has this rectangular noise blip also
+      note sometimes importing takes a long time
+      defaults
+      
+SPI(id=1, baudrate=500000, polarity=0, phase=0, bits=8, firstbit=0, sck=36, mosi=35, miso=37)
+SPI(id=2, baudrate=500000, polarity=0, phase=0, bits=8, firstbit=0, sck=36, mosi=35, miso=37)
+
+XIAO: Pins
+  Pin1  BL      Pin9  SCK
+  Pin2  RST     Pin10 MISO unconnected
+  Pin3  DC      Pin11 MOSI
+  Pin4  CS      Pin12 Vcc (3.3V)
+                Pin13 Gnd
+
+xiaoesp32c3:  configs/tft_config.esp32c3.py configs/tft_config.esp32c3.softSPI.py
+# XIAO ESP32C3 Pins
+# SCK      Pin  9     Pin(8)
+# MOSI     Pin 11     Pin(10)
+# MISO     Pin 10     Pin(9) unused
+# RST      Pin  2     Pin(3) (D1)
+# CS       Pin  4     Pin(5) (D3)
+# DC       Pin  3     Pin(4) (D2)
+# BKLT     Pin  1     Pin(2) (D0)
+
+      hello/hellox, tiny_toasters, among others work
+        feathers mostly works but has a rectangular noise blip
+        scroll has this rectangular noise blip also
+	changing BFA,TFA to 40 as in RP2040 clears this up
+      note default SPI(1) =
+        SPI(id=1, baudrate=500000, polarity=0, phase=0,
+	    bits=8, firstbit=0, sck=6, mosi=7, miso=2)
+	  SCK=PIN9/GPIO8, MOSI=PIN11/GPIO10,MISO=PIN10/GPIO9
+
+xiaonrf:    configs/xiaonrf/tft_config.nrf.spi0.py configs/xiaonrf/tft_config.nrf.soft.py 
+# XIAO ESP32C3 Pins
+# SCK      Pin  9     Pin(45)
+# MOSI     Pin 11     Pin(47)# MISO     Pin 10     Pin(46) unused
+# RST      Pin  2     Pin(3) (D1)
+# CS       Pin  4     Pin(29) (D3)
+# DC       Pin  3     Pin(28) (D2)
+# BKLT     Pin  1     Pin(2) (D0)
+      hello/hellox, tiny_toasters, among others work
+      feathers mostly works but has a rectangular noise blip
+      scroll has this rectangular noise blip also
+      note sometime mpremote iface hangs?
+      note default SPI(0),SPI(1), SPI(2), SPI(3) but not all tried
+           no info on printing of SPI
+
+
+xiaorp2040:   configs/tft_config.SoftSPI.py  configs/tft_config.SPI0.py
+# XIAO RP2040 Pins
+# SCK      Pin  9     Pin(2)
+# MOSI     Pin 11     Pin(3)
+# MISO     Pin 10     Pin(4) unused
+# RST      Pin  2     Pin(27) (D1)
+# CS       Pin  4     Pin(29) (D3)
+# DC       Pin  3     Pin(28) (D2)
+# BKLT     Pin  1     Pin(26) (D0)
+      hello/hellox, tiny_toasters, roids (with buttons), feathers, scroll
+      note default SPI(0) =
+        SPI(0, baudrate=62500000, polarity=1, phase=0,
+	    bits=8, sck=2, mosi=3, miso=4)
+          SCK=PIN9/GPIO2, MOSI=PIN11/GPIO3,MISO=PIN10/GPIO4
+            default SPI(1) =
+	SPI(1, baudrate=992063, polarity=0, phase=0,
+	    bits=8, sck=10, mosi=11, miso=8)
+	  these SCK, MOSI, MISO not exposed on XIAO
