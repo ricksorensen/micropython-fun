@@ -1,0 +1,112 @@
+esptool --chip esp32c3 --port /dev/ttyACM0 --baud 460800 write_flash -z 0x0 ~/Downloads/esp32c3-usb-20230308-unstable-v1.19.1-938-g0359aac10.bin
+--- non-usb version doesn't respond with XIAO usb port
+--- no response from REPL till hard reset/pushbutton
+--- login error on starting, noted that no-op boot.py was present (Only comments)
+
+dumpinfo:
+gc_free: 130224
+gc_free: 131056
+stack: 1012 out of 14336
+GC: total: 133824, used: 2832, free: 130992
+ No. of 1-blocks: 41, 2-blocks: 13, max blk sz: 28, max free sz: 7895
+--- Sys Info ---
+  platform:        esp32
+  version:         3.4.0; MicroPython v1.19.1-938-g0359aac10 on 2023-03-08
+  implementation:  (name='micropython', version=(1, 19, 1), _machine='ESP32C3 module with ESP32C3', _mpy=262)
+  path:            ['', '.frozen', '/lib']
+  unique_id:       b'4\x85\x18\x00\x8ep'
+--- Modules ---
+__main__          gc                ubinascii         urandom
+_boot             inisetup          ubluetooth        ure
+_onewire          math              ucollections      urequests
+_thread           micropython       ucryptolib        uselect
+_uasyncio         mip/__init__      uctypes           usocket
+_webrepl          neopixel          uerrno            ussl
+apa106            network           uhashlib          ustruct
+btree             ntptime           uheapq            usys
+builtins          onewire           uio               utime
+cmath             uarray            ujson             utimeq
+dht               uasyncio/__init__ umachine          uwebsocket
+ds18x20           uasyncio/core     umqtt/robust      uzlib
+esp               uasyncio/event    umqtt/simple      webrepl
+esp32             uasyncio/funcs    uos               webrepl_setup
+flashbdev         uasyncio/lock     uplatform
+framebuf          uasyncio/stream   upysh
+Plus any modules on the filesystem
+    dir(machine)
+['__class__', '__name__', '__dict__', 'ADC', 'ADCBlock', 'DEEPSLEEP', 'DEEPSLEEP_RESET', 'EXT0_WAKE', 'EXT1_WAKE', 'HARD_RESET', 'I2C', 'PIN_WAKE', 'PWM', 'PWRON_RESET', 'Pin', 'RTC', 'SLEEP', 'SOFT_RESET', 'SPI', 'Signal', 'SoftI2C', 'SoftSPI', 'TIMER_WAKE', 'TOUCHPAD_WAKE', 'Timer', 'UART', 'ULP_WAKE', 'WDT', 'WDT_RESET', 'bitstream', 'deepsleep', 'dht_readinto', 'disable_irq', 'enable_irq', 'freq', 'idle', 'lightsleep', 'mem16', 'mem32', 'mem8', 'reset', 'reset_cause', 'sleep', 'soft_reset', 'time_pulse_us', 'unique_id', 'wake_reason']
+    dir(mcu)
+['__class__', '__name__', '__dict__', 'HEAP_DATA', 'HEAP_EXEC', 'NVS', 'Partition', 'RMT', 'WAKEUP_ALL_LOW', 'WAKEUP_ANY_HIGH', 'gpio_deep_sleep_hold', 'idf_heap_info', 'wake_on_ext0', 'wake_on_ext1', 'wake_on_touch', 'wake_on_ulp']
+    dir(esp)
+['__class__', '__name__', '__dict__', 'LOG_DEBUG', 'LOG_ERROR', 'LOG_INFO', 'LOG_NONE', 'LOG_VERBOSE', 'LOG_WARNING', 'flash_erase', 'flash_read', 'flash_size', 'flash_user_start', 'flash_write', 'gpio_matrix_in', 'gpio_matrix_out', 'osdebug']
+
+--- FileSyst: Size=2097152   Free=2084864
+gc_free: 129472
+gc_free: 130976
+
+
+20230621:using IDF4.4, removing teachman mods to machine_i2s.c
+   starting easy_wav_player from REPL is noisy, until mono wav starts
+>>> import easy_wav_player
+   but then this works (again from REPL)
+>>> easy_wav_player.wp.play("music-16k-16bits-stereo.wav", loop=False) 
+
+...
+   mpremote exec "import easy_wav_player" seems to always work
+    noisy after ^D and import ... same as power
+
+....
+This seems to work from REPL
+>>> import wponly
+>>> wponly.wp.play("music-16k-16bits-stereo.wav", loop=False)
+
+20230621:using IDF4.4, using teachman mods, modified with my define
+   starting easy_wav_player from REPL is noisy, until mono wav starts
+>>> import easy_wav_player
+E (67811) I2S: i2s_driver_uninstall(2047): I2S port 0 has not installed
+   but then this works (again from REPL, but with error report)
+>>> easy_wav_player.wp.play("music-16k-16bits-stereo.wav", loop=False) 
+E (130535) I2S: i2s_driver_uninstall(2047): I2S port 0 has not installed
+
+...
+   mpremote exec "import easy_wav_player" seems to always work
+    noisy after ^D and import ... same as power
+
+....
+This seems to work from REPL
+>>> import wponly
+>>> wponly.wp.play("music-16k-16bits-stereo.wav", loop=False)
+
+copied over play_tone
+This seems to start and play fine, after which easy_wav_player works from same REPL session.  Reboot means easy_wav_player is noisy again.
+
+
+play_tone
+  I2S(0, sck, ws, sd, mode=I2S.TX, bits=16, format=I2S.MONO, rate=44_100, ibuf=2000)
+  I2S(id=0,
+sck=6,
+ws=7,
+sd=8,
+mode=5,
+bits=16, format=0,
+rate=44100, ibuf=2000)
+
+  write(samples)
+
+easy_wav_player:
+  WavPlayer(0,sck,ws,sd,ibuf=40000)
+  wa.play(file)
+
+.... play:
+        I2S(0,sck,ws,sd,mode=I2S.TX,bits=<from wav file>, format=I2S.STEREO<from wav file>, rate=<from wav file>, ibuf=40000)
+	use irq: state machine (PLAY, RESUME, PAUSE, FLUSH, STOP)
+	    PLAY: if data write, else state<-FLUSH if not loop else rewind file
+	    RESUME: state<-PLAY, write silence
+	    PAUSE: write silence
+	    FLUSH:  write silence for a while, else I2S.deinit(), stat<-STOP
+	    STOP: pass
+
+
+modified easy_wav_play to play mono wave all the way through - before going into original stereo wav then mono wave again.  This seems to work from REPL ... but not always?
+
+
