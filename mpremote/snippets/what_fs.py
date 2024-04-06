@@ -81,9 +81,24 @@ def main():
 
         bootsec = bytearray(512)
         esp.flash_read(esp.flash_user_start(), bootsec)
+    elif sys.platform == "samd":
+        import samd as mcu
+
+        bootsec = bytearray(512)
+        mcu.Flash().readblocks(0, bootsec)
+    elif sys.platform == "rp2":
+        import rp2 as mcu
+
+        bootsec = bytearray(512)
+        mcu.Flash().readblocks(0, bootsec)
+    elif sys.platform == "nrf52":
+        import nrf as mcu
+
+        bootsec = bytearray(512)
+        mcu.Flash().readblocks(0, bootsec)
     else:
-        with open(sys.argv[1], "rb") as f:
-            bootsec = f.read(512)
+        print(sys.platform + " readblocks not yet supported")
+        return
     decode_bootsec(bootsec)
 
 
