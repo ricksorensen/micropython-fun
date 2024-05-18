@@ -42,7 +42,7 @@ def make_tone(rate, bits, frequency):
 # ======= I2S CONFIGURATION =======
 SCK_PIN = 6
 WS_PIN = 7
-SD_PIN = 3  # GPIO8 conflicts with SD Card SPI
+SD_PIN = 2  # GPIO8 conflicts with SD Card SPI
 I2S_ID = 0
 BUFFER_LENGTH_IN_BYTES = 2000
 # ======= I2S CONFIGURATION =======

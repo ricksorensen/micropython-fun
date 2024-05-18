@@ -28,7 +28,7 @@ if "XIAO" in machinename:
     SCK_PIN = 6  # XIAO Pin5/SDA
     WS_PIN = 7  # XIAO Pin6/SCL
     # GPIO8 (XIAO Pin9/SCK) conflicts with SD Card SPI
-    SD_PIN = 3  # XIAO Pin 2/A1
+    SD_PIN = 2  # XIAO Pin 1/A0
     I2S_ID = 0
     BUFFER_LENGTH_IN_BYTES = 40000
     # ======= I2S CONFIGURATION =======
