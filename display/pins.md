@@ -1,7 +1,8 @@
+# Testing SPI displays #
+
 A simple testbed for evaluating (some) SPI displays driven by XIAO form factor MCUs ... or others.  The initial testbed is built with a 62pin breadboard.  
 
-The XIAO is 7x2 pins mounted at one end.  I have numbered the pins CCW starting with pin 1 as D0 and pin 14 as +5V
-note for espc3 GPIO9 is boot strapping pin.
+The XIAO has a 7x2 pin configuration.  I have numbered the pins CCW starting with pin 1 as D0 and pin 14 as +5V
 
 
 | Pin | StdUse | DispPin | ES32C3 | RP2    | NRF       |
@@ -18,6 +19,8 @@ note for espc3 GPIO9 is boot strapping pin.
 | 10  | MISO   | MISO    | GPIO09 | GPIO04 | P46(1.14) |
 | 11  | MOSI   | MOSI    | GPIO10 | GPIO03 | P47(1.15) |
 
+
+Note that the ESP32C3 uses GPIO09 as a strapping pin on startup.  If held low (e.g. by touch MISO on display!) the boot will be affected.  You may either switch to different pin or wait to attach MISO until after boot up.
 
 
 The display SPI connections in order (center of breadboard roughly) are:
@@ -36,7 +39,7 @@ The display SPI connections in order (center of breadboard roughly) are:
 | 7   | SDO/MISO        |
 | 8   | T_CLK-->5(SCK)  |Shared SPI for Touch and Disp|
 | 9   | T_CS            |
-| 10  | T_DIN-->4(MOSI) |
-| 11  | T_DO-->7(MISO)  |
+| 10  | T_DIN-->4(MOSI) |Shared SPI for Touch and Disp|
+| 11  | T_DO-->7(MISO)  |Shared SPI for Touch and Disp|
 | 12  | T_IRQ           |
 
