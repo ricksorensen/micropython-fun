@@ -45,4 +45,6 @@ The display SPI connections in order (center of breadboard roughly) are:
 
 Here is the testbed, the yellow and orange disconnected wires are for resistive touch screen interrupt and chip select respectively.
 
-![Testbed](testbed.png "Test bed ")
+![Testbed](testbed.png "Test bed "){width="200px"} ![st7789disp](testbeddisp.png "With Display"){width="200px"}
+
+Simple but useful
