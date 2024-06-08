@@ -43,3 +43,6 @@ The display SPI connections in order (center of breadboard roughly) are:
 | 11  | T_DO-->7(MISO)  |Shared SPI for Touch and Disp|
 | 12  | T_IRQ           |
 
+Here is the testbed, the yellow and orange disconnected wires are for resistive touch screen interrupt and chip select respectively.
+
+![Testbed](testbed.png "Test bed ")
