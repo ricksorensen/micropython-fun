@@ -10,9 +10,9 @@
 5.  commit and sign changes
     `$ cd rjsfork; git commit -s ports/samd/mcu/samd21/mpconfigmcu.h`
     this brings up editor to add commit message:
- *       Line1.  Title <72 char, filename: Title (don't forget space after :)
- *      Line2.  Blank
- *      Line3.  Description, multiple lines, markdown, <= 74 char/line
+    * Line1.  Title <72 char, filename: Title (don't forget space after :)
+    * Line2.  Blank
+    * Line3.  Description, multiple lines, markdown, <= 74 char/line
     save and exit editor
 6.  Check:
     `$ git log --show-signature -l`
