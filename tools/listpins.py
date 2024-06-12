@@ -22,3 +22,5 @@ if hasattr(Pin, "board"):
         print("{:>10s}: {}".format(p, n))
 else:
     print("Pin does not have board attribute with pin list")
+    for i in range(n):
+        print(Pin(i))
