@@ -3,6 +3,7 @@ import gc
 import micropython
 import sys
 import machine
+import platform
 import os
 
 try:
@@ -10,7 +11,7 @@ try:
 
     fstype = bdev.info()[4]
     del bdev
-except:
+except ImportError:
     fstype = "vfs (default)"
 
 
@@ -19,22 +20,22 @@ try:
     import samd as mcu
 
     knownmcu = True
-except:
+except ImportError:
     try:
         import rp2 as mcu
 
         knownmcu = True
-    except:
+    except ImportError:
         try:
             import esp32 as mcu
 
             knownmcu = True
-        except:
+        except ImportError:
             try:
                 import nrf as mcu
 
                 knownmcu = True
-            except:
+            except ImportError:
                 print("no mcu module found")
 
 print("gc_free: {}".format(gc.mem_free()))  # older/smaller do not allow f-string
@@ -48,6 +49,7 @@ print("--- Sys Info ---")
 print("  platform:       ", sys.platform)
 print("  version:        ", sys.version)
 print("  implementation: ", sys.implementation)
+print("  build:          ", platform.platform())
 sys_mpy = sys.implementation._mpy
 arch = [
     None,
@@ -61,6 +63,7 @@ arch = [
     "armv7emdp",
     "xtensa",
     "xtensawin",
+    "riscv",
 ][sys_mpy >> 10]
 print("    mpy version:", sys_mpy & 0xFF)
 print("    mpy sub-version:", sys_mpy >> 8 & 3)
@@ -71,7 +74,7 @@ print()
 print("  path:           ", sys.path)
 try:
     print("  unique_id:      ", machine.unique_id())
-except:
+except AttributeError:
     print("  unique_id:      Not Available")
 print("--- Modules ---")
 help("modules")
