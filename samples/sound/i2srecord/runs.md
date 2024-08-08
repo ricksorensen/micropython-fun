@@ -253,7 +253,7 @@ Recording results using:
 	`met120.wav`: 20s, 22050, 16bits, mono, [-5275,6293]
 
 * `ptone2.py` on a XIAO RP2040 with I2S to generate a sequence of 3 tones at 220hz, 330hz, 440hz at approximately 0.5s intervals. Output was audio through a simple portable direct wired speaker.
-	![rawsig](exper/rawsig.png "Generated multi-frequency signal captured with USB soundcard and audacity")
+	![rawsig](exper/pt_220_330_440.png "Generated multi-frequency signal captured with USB soundcard and audacity")
 	`pt2_220_330_440.wav`: 44100,16 bits, mono, [-787, 788]
 	
 * `recordnf.py` using an INMP441 I2S microphone.  Small speaker was 'close' to breadboard with microphone and phone was held a few inches above the microphone.
