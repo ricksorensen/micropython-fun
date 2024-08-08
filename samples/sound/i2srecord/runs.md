@@ -250,8 +250,19 @@ Recording results using:
 
 *  `metronome beats` app on android phone to generate 2hz pulse.  Output was audio on the phone's speaker. The `mechanical` pulse was used.
 	![2hzpulse](exper/met120_pulse.png "Metronome pulse captured with recordnf.py")
+	`met120.wav`: 20s, 22050, 16bits, mono, [-5275,6293]
+
 * `ptone2.py` on a XIAO RP2040 with I2S to generate a sequence of 3 tones at 220hz, 330hz, 440hz at approximately 0.5s intervals. Output was audio through a simple portable direct wired speaker.
 	![rawsig](exper/rawsig.png "Generated multi-frequency signal captured with USB soundcard and audacity")
+	`pt2_220_330_440.wav`: 44100,16 bits, mono, [-787, 788]
+	
 * `recordnf.py` using an INMP441 I2S microphone.  Small speaker was 'close' to breadboard with microphone and phone was held a few inches above the microphone.
 	![capture](exper/bmix1_a.png "Captured multi-frequency signal with timing pulse")
+	`bmix1.wav`: 20s, 22050, 16bits, mono, [-3682,3249]
+
+    * 440: [-400,411]
+    * 330: [-264,208]
+	* 220: [-470,458]
+
+![f330](exper/bmix1_f330.png "Rough frequency for 330hz")
 	
