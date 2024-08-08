@@ -23,7 +23,7 @@ from myconfig import SCK_PIN, WS_PIN, SD_PIN, I2S_ID, BUFFER_LENGTH_IN_BYTES
 
 # ======= AUDIO CONFIGURATION =======
 WAV_FILE = "mic.wav"
-RECORD_TIME_IN_SECONDS = 2
+RECORD_TIME_IN_SECONDS = 20
 WAV_SAMPLE_SIZE_IN_BITS = 16  # 248 invalid
 FORMAT = I2S.MONO
 SAMPLE_RATE_IN_HZ = 22_050
@@ -106,10 +106,12 @@ def grab(nsamp=20000, enc="<"):
 
 def doit(wavfile, delaywrite=False, sampbfr=100000, dlast=None):
     wav = None
+    print("doit start: ", gc.mem_free())
     if not delaywrite and (wavfile is not None):
         wav = open(wavfile, "wb")
         # create header for WAV file and write to SD card
         num_bytes_written = wav.write(wav_header)
+    print("doit wav header: ", gc.mem_free())
 
     audio_in = I2S(
         I2S_ID,
@@ -122,11 +124,13 @@ def doit(wavfile, delaywrite=False, sampbfr=100000, dlast=None):
         rate=SAMPLE_RATE_IN_HZ,
         ibuf=BUFFER_LENGTH_IN_BYTES,
     )
+    print("doit I2S: ", gc.mem_free())
 
     # allocate sample arrays
     # memoryview used to reduce heap allocation in while loop
     mic_samples = bytearray(sampbfr)
     mic_samples_mv = memoryview(mic_samples)
+    print("doit bytearray: ", gc.mem_free())
 
     num_sample_bytes_written_to_wav = 0
     num_bytes_to_write = 0
