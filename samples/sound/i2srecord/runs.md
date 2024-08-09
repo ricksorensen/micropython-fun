@@ -257,6 +257,8 @@ Recording results using:
 	`pt2_220_330_440.wav`: 44100,16 bits, mono, [-787, 788]
 	
 * `recordnf.py` using an INMP441 I2S microphone.  Small speaker was 'close' to breadboard with microphone and phone was held a few inches above the microphone.
+
+    `recordnf.doit("filename.wav",sampbfr=5000)   # esp32c3 with v522`
 	![capture](exper/bmix1_a.png "Captured multi-frequency signal with timing pulse")
 	`bmix1.wav`: 20s, 22050, 16bits, mono, [-3682,3249]
 
@@ -265,4 +267,18 @@ Recording results using:
 	* 220: [-470,458]
 
 ![f330](exper/bmix1_f330.png "Rough frequency for 330hz")
-	
+
+* `recordnf.py` using pc speakers,  holding mic  'close' to speaker. 
+
+`ptone2.dotone([220,330,440])`
+![pcspeak](exper/pcspeaker.png "PC speaker, no metronome")
+
+CMajor scale: `ptone2.dotone([261.6,293.7,329.6,349.2,392,440,493.9,523.3])`
+![cmajor](exper/cmajor.png "C Major scale starting at C3")
+
+More notes
+
+  * small battery speaker distorts 330hz signal
+  * amplitude changes   for speakers when frequency changes
+  * esp32c3 compiled with idf 5.2.2 has less RAM available in heap- cannot use larger buffer sizes.
+  
