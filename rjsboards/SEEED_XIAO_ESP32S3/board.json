@@ -1,0 +1,19 @@
+{
+    "deploy": [
+        "../deploy_s3.md"
+    ],
+    "docs": "",
+    "features": [
+        "BLE",
+        "WiFi"
+    ],
+    "id": "esp32s3-xiao",
+    "images": [
+        "esp32c3_devkitmini.jpg"
+    ],
+    "mcu": "esp32s3",
+    "product": "ESP32-S3 XIAO",
+    "thumbnail": "",
+    "url": "https://www.espressif.com/en/products/modules",
+    "vendor": "Espressif"
+}
