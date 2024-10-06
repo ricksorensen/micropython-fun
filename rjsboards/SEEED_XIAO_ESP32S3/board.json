@@ -5,15 +5,17 @@
     "docs": "",
     "features": [
         "BLE",
+        "External 8MB Flash",
+        "External 8MB Oct-SPIRAM",
         "WiFi"
     ],
     "id": "esp32s3-xiao",
     "images": [
-        "esp32c3_devkitmini.jpg"
+        ""
     ],
     "mcu": "esp32s3",
     "product": "ESP32-S3 XIAO",
     "thumbnail": "",
-    "url": "https://www.espressif.com/en/products/modules",
-    "vendor": "Espressif"
+    "url": "https://www.seeedstudio.com/XIAO-ESP32S3-p-5627.html",
+    "vendor": "seeed studio"
 }
