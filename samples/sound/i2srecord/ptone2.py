@@ -20,7 +20,7 @@ from machine import Pin
 
 def make_tone(rate, bits, frequency):
     # create a buffer containing the pure tone samples
-    samples_per_cycle = rate // frequency
+    samples_per_cycle = int(rate // frequency)
     sample_size_in_bytes = bits // 8
     samples = bytearray(samples_per_cycle * sample_size_in_bytes)
     volume_reduction_factor = 32
