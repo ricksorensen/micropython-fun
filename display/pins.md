@@ -66,25 +66,14 @@ The display SPI connections in order (center of breadboard roughly) are:
 | 6   | BKLT            |
 | 7   | SDO/MISO        |
 
-**For resistive touch**
 
-| Pin | Disp Label         |Note|
-|:----|---|--|
-| 8  | T_CLK-->5(SCK)  | Shared SPI for Touch and Disp |
-| 9  | T_CS            |                               |
-| 10 | T_DIN-->4(MOSI) | Shared SPI for Touch and Disp |
-| 11 | T_DO-->7(MISO)  | Shared SPI for Touch and Disp |
-| 12 | T_IRQ           |                               |
-
-**For capacitive touch**
-
-| Pin | Disp Label         |Note|
-|:----|---|--|
-| 8  | T_SCL           | I2C clock                     |
-| 9  | T_RST           |                               |
-| 10 | T_SDA           |                               |
-| 11 | T_IRQ           |                               |
-| 12 | SD CS           | micro SD, shared SPI          |
+| *Loc* | *Label -> Jumper* <br> *Resistive Touch Pin*  | *Capacitive Touch Pin*  |
+|:--: | :------------------ | :-----------------|
+| 8  | T_CLK-->5(SCK)  | T_SCL |
+| 9  | T_CS            | T_RST |
+| 10 | T_DIN-->4(MOSI) | T_SDA |
+| 11 | T_DO-->7(MISO)  | T_IRQ |
+| 12 | T_IRQ           | SD_CS |
 
 
 Here is the testbed, the yellow and orange disconnected wires are for resistive touch screen interrupt and chip select respectively.
@@ -92,3 +81,9 @@ Here is the testbed, the yellow and orange disconnected wires are for resistive 
 ![Testbed](testbed.png "Test bed "){width="200px"} ![st7789disp](testbeddisp.png "With Display"){width="200px"}
 
 Simple but useful
+
+| abc  |  def   |   ghi |
+|----|----|----|
+| 123  | 456  |  789 | 
+|  ss  |  empty <br> another | kkkk |
+| lksdj| another line| laikdjsf|
