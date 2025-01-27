@@ -13,10 +13,10 @@ use with two different drivers:
 The displays have three different touch screen modes:
 
 + No touch screen
-+ Resistive touch screen with xpt2046 
++ Resistive touch screen with XPT2046 
 Shared SPI bus with display.  Independent CS and IRQ pins
-+ Capacitive touch screen with ft6206 
-Uses I2C bus.  Independent RST and IRQ pins
++ Capacitive touch screen with FT6206 
+Uses I2C bus.  Independent FT6206 nRST and IRQ pins.  The nRST must be low at power on then then go high for the touch screen to operate. 
 
 **The TFT Display wiring is common for all the displays**
 
