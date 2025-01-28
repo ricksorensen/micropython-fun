@@ -282,3 +282,14 @@ More notes
   * amplitude changes   for speakers when frequency changes
   * esp32c3 compiled with idf 5.2.2 has less RAM available in heap- cannot use larger buffer sizes.
   
+# Record Eval break board
+XIAO:  1 -> 
+2->
+3->SDcard 
+
+ptone2.py: RP2, I2S audio out ... play a frequency
+parse_wav.py: open a wav file and print stuff no sounds output
+waverjs.py: incomplete parse a opened wave fijle 
+recordnf.py: uses myconfig.py for SCK, WS, SD, I2S_ID, BUFFER_LENGTH_IN_BYTES
+          doit() writes to a wav file records and saves.  see delaywrite boolean to write at end, else write as recording
+dosdcard.py: mount sdcard, and list dir
