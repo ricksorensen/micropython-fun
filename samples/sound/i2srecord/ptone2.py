@@ -18,25 +18,34 @@ from machine import I2S
 from machine import Pin
 
 
-def make_tone(rate, bits, frequency):
+def make_tone(rate, bits, frequency, debug=False):
     # create a buffer containing the pure tone samples
-    samples_per_cycle = int(rate // frequency)
-    sample_size_in_bytes = bits // 8
-    samples = bytearray(samples_per_cycle * sample_size_in_bytes)
-    volume_reduction_factor = 32
-    range = pow(2, bits) // 2 // volume_reduction_factor
+    if (frequency is None) or (frequency <= 0):
+        samples = bytearray(100 * [0])
+        samples_per_cycle = 0
+    else:
+        samples_per_cycle = int(rate // frequency)
+        sample_size_in_bytes = bits // 8
+        samples = bytearray(samples_per_cycle * sample_size_in_bytes)
+        volume_reduction_factor = 32
+        range = pow(2, bits) // 2 // volume_reduction_factor
 
-    if bits == 16:
-        format = "<h"
-    else:  # assume 32 bits
-        format = "<l"
+        if bits == 16:
+            format = "<h"
+        else:  # assume 32 bits
+            format = "<l"
 
-    for i in range(samples_per_cycle):
-        sample = range + int(
-            (range - 1) * math.sin(2 * math.pi * i / samples_per_cycle)
+        for i in range(samples_per_cycle):
+            sample = range + int(
+                (range - 1) * math.sin(2 * math.pi * i / samples_per_cycle)
+            )
+            struct.pack_into(format, samples, i * sample_size_in_bytes, sample)
+
+    if debug:
+        print(
+            f"make_tone: f={frequency} lenbytes={len(samples)} samp/cycle={samples_per_cycle}"
         )
-        struct.pack_into(format, samples, i * sample_size_in_bytes, sample)
-
+        print(f"           rate={rate}  bits={bits}")
     return samples
 
 
@@ -57,7 +66,7 @@ SAMPLE_RATE_IN_HZ = 44_100
 # ======= AUDIO CONFIGURATION =======
 
 
-def dotone(f=TONE_FREQUENCY_IN_HZ):
+def dotone(f=TONE_FREQUENCY_IN_HZ, quiet=None):
     flist = f
     if type(f) is not list:
         flist = [f]
@@ -86,6 +95,8 @@ def dotone(f=TONE_FREQUENCY_IN_HZ):
                 ct = time.ticks_ms()
                 while time.ticks_diff(time.ticks_ms(), ct) < 500:
                     _ = audio_out.write(s)
+            if quiet:
+                time.sleep_ms(quiet)
 
     except (KeyboardInterrupt, Exception) as e:
         print("caught exception {} {}".format(type(e).__name__, e))
