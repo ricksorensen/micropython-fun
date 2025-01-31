@@ -104,27 +104,37 @@ def grab(nsamp=20000, enc="<"):
     return dout, bfr[:nread]
 
 
-def doit(wavfile, delaywrite=False, sampbfr=100000, dlast=None):
+def doit(
+    wavfile,
+    delaywrite=False,
+    sampbfr=100000,
+    dlast=None,
+    deinit=True,
+    audio_in=None,
+    delay=None,
+):
     wav = None
     print("doit start: ", gc.mem_free())
     if not delaywrite and (wavfile is not None):
         wav = open(wavfile, "wb")
         # create header for WAV file and write to SD card
         num_bytes_written = wav.write(wav_header)
-    print("doit wav header: ", gc.mem_free())
+    print("doit after wav header: ", gc.mem_free())
 
-    audio_in = I2S(
-        I2S_ID,
-        sck=Pin(SCK_PIN),
-        ws=Pin(WS_PIN),
-        sd=Pin(SD_PIN),
-        mode=I2S.RX,
-        bits=WAV_SAMPLE_SIZE_IN_BITS,
-        format=FORMAT,
-        rate=SAMPLE_RATE_IN_HZ,
-        ibuf=BUFFER_LENGTH_IN_BYTES,
-    )
-    print("doit I2S: ", gc.mem_free())
+    if not audio_in:
+        audio_in = I2S(
+            I2S_ID,
+            sck=Pin(SCK_PIN),
+            ws=Pin(WS_PIN),
+            sd=Pin(SD_PIN),
+            mode=I2S.RX,
+            bits=WAV_SAMPLE_SIZE_IN_BITS,
+            format=FORMAT,
+            rate=SAMPLE_RATE_IN_HZ,
+            ibuf=BUFFER_LENGTH_IN_BYTES,
+        )
+        print("new audio_in I2S created")
+    print("doit after I2S: ", gc.mem_free())
 
     # allocate sample arrays
     # memoryview used to reduce heap allocation in while loop
@@ -136,15 +146,16 @@ def doit(wavfile, delaywrite=False, sampbfr=100000, dlast=None):
     num_bytes_to_write = 0
     print(os.uname().machine)
     print("Recording size: {} bytes\n I2S:".format(RECORDING_SIZE_IN_BYTES))
-    print(audio_in)
-    time.sleep(0.5)  # no flush on print for upy ... rp2 with internal file
+    # print(audio_in)
+    if delay:
+        time.sleep_ms(delay)  # no flush on print for upy ... rp2 with internal file
     print("mic_samples size: ", len(mic_samples))
     print("wav file: ", wavfile)
     gc.collect()
     print("mem_free: ", gc.mem_free())
 
     print("==========  START RECORDING ==========")
-    time.sleep(0.5)
+    # time.sleep(0.5)
     try:
         gc.collect()
         while num_sample_bytes_written_to_wav < RECORDING_SIZE_IN_BYTES:
@@ -161,7 +172,7 @@ def doit(wavfile, delaywrite=False, sampbfr=100000, dlast=None):
                     num_sample_bytes_written_to_wav += num_bytes_written
                 else:
                     num_sample_bytes_written_to_wav += num_bytes_to_write  # RJS no file
-                print("totnew: ", num_bytes_read_from_mic)
+                # print("totnew: ", num_bytes_read_from_mic)
             else:
                 print("no bytes read")
         print("==========  DONE RECORDING ==========")
@@ -169,8 +180,10 @@ def doit(wavfile, delaywrite=False, sampbfr=100000, dlast=None):
     except (KeyboardInterrupt, Exception) as e:
         print("caught exception {} {}".format(type(e).__name__, e))
     finally:
-        audio_in.deinit()
-        print("I2S deinit complete")
+        if deinit:
+            audio_in.deinit()
+            print("I2S deinit complete")
+            audio_in = None
     # cleanup
     gc.collect()
     print("mem_free before close:", gc.mem_free())
@@ -178,7 +191,7 @@ def doit(wavfile, delaywrite=False, sampbfr=100000, dlast=None):
         wav.close()
         print("file closed")
         gc.collect()
-        print("mem_free after close:", gc.mem_free())
+        print("mem_free after file close:", gc.mem_free())
     elif delaywrite and (wavfile is not None):
         nbo = min(RECORDING_SIZE_IN_BYTES, len(mic_samples))
         writewav(mic_samples_mv[:nbo], wavfile)
@@ -210,3 +223,4 @@ def doit(wavfile, delaywrite=False, sampbfr=100000, dlast=None):
         # print(struct.unpack(f"<{nb//2}h", mic_samples_mv[lb:]))
         dx = array.array("h", mic_samples[lb:num_bytes_to_write])
         print(dx)
+    return audio_in
