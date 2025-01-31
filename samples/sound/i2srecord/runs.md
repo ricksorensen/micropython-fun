@@ -235,6 +235,7 @@ things I learned
 * local file system writes on RP2040 are slow and impact I2S wav write
 * deinit I2S before ending program or system can hang
 * esp32c3 works and can write to local filesystem
+* rp2 works with sdcard, but seems to have problems writing to local filesystem while using I2S .. hangs the processor.
 * INMP441 needs to be initialized - read a few hundred milliseconds?
    - not necessarily ... maybe just time.  esp32c3 seems okay, rp2040 has glitch
 * external sd reader weird  see `chkit.note`
@@ -281,15 +282,35 @@ More notes
   * small battery speaker distorts 330hz signal
   * amplitude changes   for speakers when frequency changes
   * esp32c3 compiled with idf 5.2.2 has less RAM available in heap- cannot use larger buffer sizes.
+  * INMP441 and SPH-0645 both need settling time (0.25 - 0.5 s) after I2S clocking started.
   
-# Record Eval break board
-XIAO:  1 -> 
-2->
-3->SDcard 
+  
+# Record Eval breadboard 
+- doexper.py: run the experiments.  Uses dosdcards3 and recordnf_16 
+- dosdcards3: mount the sdcard- for XIAO ESP32C3, XIAO ESP32C3, XIAO RP2040
+- recordnf_16: perform the experiment, parameters are:
+*   5s capture
+*   16-bits, single channel
+*   16000 samples/sec
+*   capture 10000 bytes and then write, repeat till done.  
+*   called with: ai2s = rec.doit(fnbase + "run2.wav", sampbfr=10000, deinit=True, audio_in=ai2s)
 
-ptone2.py: RP2, I2S audio out ... play a frequency
-parse_wav.py: open a wav file and print stuff no sounds output
-waverjs.py: incomplete parse a opened wave fijle 
-recordnf.py: uses myconfig.py for SCK, WS, SD, I2S_ID, BUFFER_LENGTH_IN_BYTES
-          doit() writes to a wav file records and saves.  see delaywrite boolean to write at end, else write as recording
-dosdcard.py: mount sdcard, and list dir
+doexper(base_file_name, delay between runs in seconds) runs the following experiments:
+
+run1
+: from startup, capture on sdcard as /sd/[mcu]/[mic]_run1.wav, and deinit I2S
+
+run2
+: continue, capture on sdcard as /sd/[mcu]/[mic]_run2.wav, and deinit I2S
+
+run3
+: capture on sdcard as /sd/[mcu]/[mic]_run3.wav, and leave I2S active
+
+run4
+: use active I2S from run3, capture on sdcard as 
+: /sd/[mcu]/[mic]_run4.wav, and leave I2S active
+
+run5: use active I2S from run4, capture on sdcard as /sd/[mcu]/[mic]_run5.wav, and deinit I2S
+
+
+
