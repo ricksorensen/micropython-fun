@@ -1,7 +1,7 @@
 import os
 
 
-def mountsd(baud=25_000_000, misop=None, soft=True):
+def mountsd(baud=25_000_000, misop=None, soft=False:
     if os.uname().machine.count("XIAO RP2040"):
         from machine import SoftSPI, SPI, Pin
         from sdcard import SDCard
@@ -40,13 +40,52 @@ def mountsd(baud=25_000_000, misop=None, soft=True):
         print("RP2040")
         print(spi)
         print(os.listdir("/sd"))
-    elif os.uname().machine.count("ESP32") and os.uname().machine.count("XIAO"):
-        from machine import SoftSPI, SPI, Pin
-        from sdcard import SDCard
+    elif os.uname().machine.count("ESP32S3") and os.uname().machine.count("XIAO"):
+        from machine import SoftSPI, SPI, Pin  # SDCard not sure how this works
+        from sdcard import SDCard  # so use micropython sdcard
+
+        #    CS  xpin3   D2   GPIO3
+        #   SCK  xpin9   SCK  GPIO7
+        #  MISO  xpin10  MISO GPIO8
+        #  MOSI  xpin11  MOSI GPIO9
+        mip = 8 if misop is None else misop
+        if soft:
+            spi = SoftSPI(
+                baudrate=1_000_000,
+                polarity=0,
+                phase=0,
+                bits=8,
+                firstbit=SPI.MSB,
+                sck=Pin(7),
+                mosi=Pin(9),
+                miso=Pin(mip),
+            )
+        else:
+            spi = SPI(
+                1,
+                baudrate=1_000_000,
+                polarity=0,
+                phase=0,
+                bits=8,
+                firstbit=SPI.MSB,
+                sck=Pin(7),
+                mosi=Pin(9),
+                miso=Pin(mip),
+            )
+
+        sd = SDCard(spi, Pin(3))
+        sd.init_spi(baud)
+        os.mount(sd, "/sd")
+        print("ESP32S3")
+        print(spi)
+        print(os.listdir("/sd"))
+    elif os.uname().machine.count("ESP32C3") and os.uname().machine.count("XIAO"):
+        from machine import SoftSPI, SPI, Pin  # SDCard not sure how this works
+        from sdcard import SDCard  # so use micropython sdcard
 
         #    CS  xpin3   D2   GPIO4
         #   SCK  xpin9   SCK  GPIO8
-        #  MISO  xpin10  MISO GPIO9
+        #  MISO  xpin10  MISO GPIO9 --> GPIO20 (RX) for strappin
         #  MOSI  xpin11  MOSI GPIO10
         mip = 9 if misop is None else misop
         if soft:
@@ -73,7 +112,7 @@ def mountsd(baud=25_000_000, misop=None, soft=True):
                 miso=Pin(mip),
             )
 
-        sd = SDCard(spi, Pin(4, Pin.OUT))
+        sd = SDCard(spi, Pin(4))
         sd.init_spi(baud)
         os.mount(sd, "/sd")
         print("ESP32C3")
