@@ -1,7 +1,7 @@
 import os
 
 
-def mountsd(baud=25_000_000, misop=None, soft=False:
+def mountsd(baud=25_000_000, misop=None, soft=False):
     if os.uname().machine.count("XIAO RP2040"):
         from machine import SoftSPI, SPI, Pin
         from sdcard import SDCard
