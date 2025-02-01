@@ -1,4 +1,22 @@
-RP2040 with record.py
+TL;DR
+
+[parasiticpower](https://www.reddit.com/r/esp32/comments/1g6u7so/inmp441_works_even_without_power_on_vdd_pin_how/?rdt=42834)
+[warmup](https://github.com/espressif/arduino-esp32/issues/8207)
+[sph0645](https://www.mouser.com/datasheet/2/218/Knowles_corporation_sph0645lm4h_1_datasheet-2308959.pdf)
+
+[warmup2](https://invensense.tdk.com/wp-content/uploads/2015/02/INMP441.pdf)
+As quoted from page 10 of this pdf:
+
+> Startup
+
+> The microphones have zero output for the first 2<sup>18</sup> SCK clock cycles (85ms with SCK at 3.072 MHz) following power-up.
+
+C3,S3: 1.026Mhz measured, --> 256ms
+
+super chk: $^(upper)$   sub chk: $_(lower)$ done
+
+RP2040 with record.py   default SCK is 1Mhz measured, 2<sup>18</sup>  = 262ms
+
 Program did not complete.  It hung up in the I2S object deinit.
 Used phone apps to generate tone and metronome click
 ```
@@ -237,13 +255,15 @@ things I learned
 * esp32c3 works and can write to local filesystem
 * rp2 works with sdcard, but seems to have problems writing to local filesystem while using I2S .. hangs the processor.
 * INMP441 needs to be initialized - read a few hundred milliseconds?
-   - not necessarily ... maybe just time.  esp32c3 seems okay, rp2040 has glitch
+    - not necessarily ... maybe just time.  all modules same esp32c3 seems okay, rp2040 has glitch
 * external sd reader weird  see `chkit.note`
-   - keeping cabling tight and minimizing connections helps
-   - external reader needs lower baud (related to length of connector)
-   - esp32c3 seems pickier 
-   - cheap reader - drops MISO to low when powering up, and fluctuates
-   - cheap reader causes esp32c3 to reboot if powered up after mcu- power?
+    - keeping cabling tight and minimizing connections helps
+    - external reader needs lower baud (related to length of connector)
+    - esp32c3 seems pickier 
+    - cheap reader
+    	- drops MISO to low when powering up, and fluctuates
+        - cheap reader causes esp32c3 to reboot if powered up after mcu- power?
+* I2S Mics can have power from clk/data/ws lines ... and Mic will respond without vcc attached
 
 ## Experiments ##
 
@@ -312,5 +332,10 @@ run4
 
 run5: use active I2S from run4, capture on sdcard as /sd/[mcu]/[mic]_run5.wav, and deinit I2S
 
+  * abc
+  def
+        * xyz
+		* uuu
+	
 
 
