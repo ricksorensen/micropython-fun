@@ -1,4 +1,34 @@
-TL;DR
+# Recording microphones with I2S
+Using a collection of Seeed XIAO mcu modules, I tested I2S recording with MEMS microphone.  After working through learning curves successful recordings were possible.  The major things learned:
+
+1. Read the datasheets on the devices.  It turns out there is a significant settling time after power up and initialization for the microphones to get to baseline and report repeatable data.
+2. Sensitivities  need to be evaluated as the output levels _seem_ low.
+3. The two microphones used could each be powered parasitically from the I2S signals without VDD applied.  The quality of output for this has not been evaluated yet.
+4. Device for SD Card/Flash access matters, in particular the RP2040 did not appear to like writing to on-board flash filesystem while using I2S.
+
+The evaluation used:
+
++ [micropython](https://github.com/micropython/micropython).  Current version as of 20250128 built locally.
++ XIAO 14 pin (11 data, 3 power)  processors
+    * [ESP32C3](https://www.seeedstudio.com/Seeed-XIAO-ESP32C3-p-5431.html) with RISC-V processor
+	* [ESP32S3](https://www.seeedstudio.com/XIAO-ESP32S3-p-5627.html) with dual-core Xtensa processor
+	* [RP2040](https://www.seeedstudio.com/XIAO-RP2040-v1-0-p-5026.html) with dual ARM M0+ based processors
++ I2S MEMS microphones
+    * [INMP441](https://invensense.tdk.com/wp-content/uploads/2015/02/INMP441.pdf) microphone
+    * [SPH0645](https://www.mouser.com/datasheet/2/218/Knowles_corporation_sph0645lm4h_1_datasheet-2308959.pdf) microphone
++ SD Card module.  Evaluation used driver `sdcard.py` from micropython library, not the ESP32 hardward SDcard.
+    * Adafruit 3.3V SDCard breakout [link](https://www.adafruit.com/product/4682)
+	* Generic 3.3V SDCard breakout [link](https://www.amazon.com/gp/product/B0B779R5TZ?ie=UTF8&psc=1)
++ Breadboard test platform 
+
+# TOC
+note spaces after items in list
+
+ 1.  Experiments   
+  1.1 Signal Generation   
+  1.2 Recording   
+  1.3 Results   
+ 2.  Microphone Notes   
 
 [parasiticpower](https://www.reddit.com/r/esp32/comments/1g6u7so/inmp441_works_even_without_power_on_vdd_pin_how/?rdt=42834)
 [warmup](https://github.com/espressif/arduino-esp32/issues/8207)
