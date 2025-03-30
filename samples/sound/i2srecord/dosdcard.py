@@ -1,7 +1,10 @@
 import os
 
+_LASTMOUNT = None
+
 
 def mountsd(baud=25_000_000, misop=None, soft=False):
+    global _LASTMOUNT
     if os.uname().machine.count("XIAO RP2040"):
         from machine import SoftSPI, SPI, Pin
         from sdcard import SDCard
@@ -40,6 +43,7 @@ def mountsd(baud=25_000_000, misop=None, soft=False):
         print("RP2040")
         print(spi)
         print(os.listdir("/sd"))
+        _LASTMOUNT = "/sd"
     elif os.uname().machine.count("ESP32S3") and os.uname().machine.count("XIAO"):
         from machine import SoftSPI, SPI, Pin  # SDCard not sure how this works
         from sdcard import SDCard  # so use micropython sdcard
@@ -79,6 +83,7 @@ def mountsd(baud=25_000_000, misop=None, soft=False):
         print("ESP32S3")
         print(spi)
         print(os.listdir("/sd"))
+        _LASTMOUNT = "/sd"
     elif os.uname().machine.count("ESP32C3") and os.uname().machine.count("XIAO"):
         from machine import SoftSPI, SPI, Pin  # SDCard not sure how this works
         from sdcard import SDCard  # so use micropython sdcard
@@ -118,5 +123,15 @@ def mountsd(baud=25_000_000, misop=None, soft=False):
         print("ESP32C3")
         print(spi)
         print(os.listdir("/sd"))
+        _LASTMOUNT = "/sd"
     else:
         print("unknown sd config")
+
+
+def umountsd(mtname=None):
+    global _LASTMOUNT
+    if mtname is None:
+        mtname = _LASTMOUNT
+    if mtname is not None:
+        os.umount(mtname)
+        _LASTMOUNT = None
