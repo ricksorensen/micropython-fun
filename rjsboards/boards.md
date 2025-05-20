@@ -91,3 +91,16 @@ mpconfigboard.cmake:
    use sdkconfig.small.board with larger app partition leaving smaller vfs
    
 sdkconfig.small.board, partitions-smallfs.csv for repatitioning flash
+
+
+# ESP32C3 Generic Builds #
+| version | compiler | binsize | fs size | gc_free |
+|---|---|---|---|---|
+| v1.19.1 | 4.4.1 | 1431808 | 2084864 | 120224 |
+| v1.20.0 | 4.4.3 | 1461232 | 2084864 | 130080 |
+| v1.21.0 | 5.0.2 | 1587840 | 2084864 | 207632 |
+| v1.22.2 | 5.0.4 | 1664208 | 2084864 | 199440 |
+| v1.23.0 | 5.0.4 | 1667600 | 2084864 | 199440 |
+| v1.24.1 | 5.2.2 | 1779264 | 2084864 | 174864 |
+| v1.25.0 | 5.2.2 | 1835856 | 2084864 | 174912 |
+| v1.26.0prvw | 5.4.1 | 1879408 | 2084864 | 174880 |
