@@ -1,16 +1,34 @@
-SEEED_XIAO_SAMD21
-+ same as release version
+Board List
+
+	* XIAO SAMD21- use `micropython/port/samd/boards/SEEED_XIAO_SAMD21`
+	* XIAO NRF52- use `micropython/port/nrf/boards/SEEED_XIAO_NRF52`
+	* SEEED WIO Terminal (SAMD51)- use `micropython/port/samd/boards/SEEED_WIO_TERMINAL`
+    * XIAO RP2040-use `rjsboards/SEEED_XIAO_RP2040`
+	  LED is different than default PICO board
+	* RPI PICOW- use `micropython/port/rp2/boards/RPI_PICO_W`
+	* RPI PICO2- use `micropython/port/rp2/boards/RPI_PICO2`
+	* RPI PICO2 RISCV- use `micropython/port/rp2/boards/RPI_PICO2` with variant `RISCV`
+	* XIAO ESP32C3
+		Highly dependent on Espressif IDF version
+	* XIAO ESP32S3
+		Highly dependent on Espressif IDF version
+	
+RJSBoards
 
 SEEED_XIAO_SAMD21VFS
+
 + add support for FATFS for use with SD cards.
 
 SEEED_XIAO_RP2040
-+ original was RPI_PICO
-+ change name parameters
+
 + add XIAO specific PIN names and change LED pin.
 
-SEEED_XIAO_ESP32S3
-+ original was ESP32_GENERIC_S3
+SEEED_XIAO_ESPSML2   COMPRESS OFF        too big
+ESP32_GENERIC_S3       COMPRESS OFF
+SEEED_XIAO_ESP32C3    COMPRESS DEF       okay
+SEEED_XIAO_ESPSMLFS   COMPRESS OFF     too big
+SEEED_XIAO_ESP32S3X/SEEED_XIAO_ESP32S3     COMPRESS DEF    too big
++ original was ESP32_GENERIC_S3          COMPRESS DEF            too big  no ulab, no sd
 + no variant, only SPIRAM_OCT load config used
 + cmake includes SPIRAM_OCT parameters
 + xiao sdkconfig sets XIAO strings and NORESET?
@@ -104,3 +122,20 @@ sdkconfig.small.board, partitions-smallfs.csv for repatitioning flash
 | v1.24.1 | 5.2.2 | 1779264 | 2084864 | 174864 |
 | v1.25.0 | 5.2.2 | 1835856 | 2084864 | 174912 |
 | v1.26.0prvw | 5.4.1 | 1879408 | 2084864 | 174880 |
+
+
+| board | build | binsize | operation | notes |
+|-------|-------|----------|-----------|-------|
+|  nrf | ulab, framebuf, ssd1306, st7789      | 788480 | boots, dumpinfo  |       |
+|  samd21 | framebuf, ssd1306, select       | 390656 | boots, dumpinfo |       |
+|  wio |       | 840704 |           |       |
+|  pico |       |          |           |       |
+|  picow | ulab, framebuf, neopixel, ssd1306, st7789       | 2010624         | boots, dumpinfo           |       |
+|  xiaorp2 |       | 985600         | boots, dumpinfo, i2s  | some difficulty with first connection  |
+|  pico2 |       | 943616          |           |       |
+|  pico2riscv |       | 1161216          |           |       |
+|  unix | ulab, framebuf, btree       | 1063368         | starts, dumpinfo          |       |
+| xiaoc3 |       |1873248          |           |       |
+| xiaos3x | ulab, framebuf, ssd1306, st7780, mqtt, neopixel, ntptime       | 2029536          | boots, dumpinfo, holiday |       |
+| gens3 |       |2029232          |           |       |
+|       |       |          |           |       |
