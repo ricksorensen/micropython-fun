@@ -12,6 +12,8 @@ default value from mpconfigport.h, uart.h, or module values from boards/ESP32_GE
 | MICROPY_PY_MACHINE_I2C_TARGET | o(0) | o(1) | o(1) | o(0) | o(1) | o(1) |
 | MICROPY_PY_MACHINE_DAC | o(1) | o(0) | o(0) | o(0) | o(1) | o(0) |
 
+ : ESP32 Module settings 
+
 original values for some micropy selections.
 
 | option | default |
