@@ -15,15 +15,37 @@ Board List
 	
 RJSBoards
 
+SEEED_XIAO_NRF52
+
+	+ extra modules: st7789 ulab
+	+ manifest.basicnrf.py: ssd1306
+
+SEEED_XIAO_SAMD21
+
++ codesize=200K
++ extra modules: st7789 ulab
++ manifest.basic.py:
+
 SEEED_XIAO_SAMD21VFS
 
 + add support for FATFS for use with SD cards.
++ same size/modules as base
+
+SEEED_WIO_TERMINAL
+
++ codesize
++ extra modules st7789
++ manifest.wio.py: umqtt
+
+
 
 SEEED_XIAO_RP2040
 
 + add XIAO specific PIN names and change LED pin.
 
 SEEED_XIAO_ESPSML2   COMPRESS OFF        too big
+
+
 ESP32_GENERIC_S3       COMPRESS OFF
 SEEED_XIAO_ESP32C3    COMPRESS DEF       okay
 SEEED_XIAO_ESPSMLFS   COMPRESS OFF     too big
