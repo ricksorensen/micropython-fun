@@ -132,6 +132,42 @@ mpconfigboard.cmake:
    
 sdkconfig.small.board, partitions-smallfs.csv for repatitioning flash
 
+# Builds 
+
+## 20250828
+
+Builds using -Os to opitimize for size on C3 builds-- now in master
+master
+
+| board | tag/branch | binary size |
+| :--- | :---: | ---:|
+| SEEED_XIAO_NRF52 | master | 788480 |
+| SEEED_XIAO_SAMD21 | master | 391168 |
+| SEEED_WIO_TERMINAL | master | 840704 |
+| SEEED_XIAO_RP2040 | master | 950272 |
+| RPI_PICO_W | master | 2011136 |
+| RPI_PICO2 | master | 910848 |
+| RPI_PICO2RISCV | master | 1123840 |
+| standard | master | 1063368 |
+| SEEED_XIAO_ESPSML2 | master -Os | 1966288 |
+| SEEED_XIAO_ESP32C3 | master -Os | 1684096 |
+| SEEED_XIAO_ESPSMLFS | master -Os | 2053104 |
+| SEEED_XIAO_ESP32S3X | master | 2030320 |
+| ESP32_GENERIC_S3 | master | 2030016 |
+| SEEED_XIAO_ESP32C3 | esp32_bitstream -Os | 1686176 |
+| SEEED_XIAO_ESP32S3X | esp32_bitstream | 1744752 |
+| SEEED_XIAO_ESP32S3X | esp32_bitstream | 2032448 |
+
+master, no -Os for ESP32C3
+
+| board | tag/branch | binary size |
+| :--- | :---: | ---:|
+| SEEED_XIAO_ESPSML2 | master | NaN |
+| SEEED_XIAO_ESP32C3 | master | 1873936 |
+| SEEED_XIAO_ESPSMLFS | master | NaN |
+| SEEED_XIAO_ESP32C3 | esp32_bitstream | 1875984 |
+
+
 
 # ESP32C3 Generic Builds #
 | version | compiler | binsize | fs size | gc_free |
@@ -144,6 +180,8 @@ sdkconfig.small.board, partitions-smallfs.csv for repatitioning flash
 | v1.24.1 | 5.2.2 | 1779264 | 2084864 | 174864 |
 | v1.25.0 | 5.2.2 | 1835856 | 2084864 | 174912 |
 | v1.26.0prvw | 5.4.1 | 1879408 | 2084864 | 174880 |
+| v1.26 | 5.4.2 | - | - | - |  5.4.2 needed to use new esp libs
+
 
 
 | board | build | binsize | operation | notes |
