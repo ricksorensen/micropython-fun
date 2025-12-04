@@ -37,7 +37,7 @@ Can use `>pre-commit run --file xxx` to check
     probably more sophisticated steps here!
     The pull request will be automatically updated
     
- ##20250846: how to split repository
+ ## 20250846: how to split repository
 https://github.com/orgs/community/discussions/167314
 
 ``` text
@@ -66,3 +66,55 @@ I guess your current structure is similar to this:
       > git push -u origin main 
 ```
 Link: Git Filter  https://github.com/newren/git-filter-repo
+
+## 20251204: show information
+```bash
+$ git status -uno
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   config.esp32s3.py
+	modified:   config.py
+	modified:   holiday.py
+	modified:   simpfirefly.py
+```
++ shows branch/version
++ does not show commit version, 
++ shows differences with version
+
+git log
+```bash
+$ git log
+commit e6357ac6cf7af70acfdaa8b9b137ea1bfeb6c6de (HEAD -> main, origin/main)
+Author: Rick Sorensen <rick.sorensen@gmail.com>
+Date:   Mon Dec 1 11:40:25 2025 -0600
+
+    README: Add schematic image
+
+commit 03676b99b2ddfad31acf0484bf8cddf42ae4fd11 (tag: neopixel_ldr_v0.87, tag: Display_v1.00)
+Author: Rick Sorensen <rick.sorensen@gmail.com>
+Date:   Mon Dec 1 10:01:56 2025 -0600
+
+    holiday: 2025 Hanukkah
+
+commit c4de475c72a02ce543fe64e7193f59a8e7a7a924
+Author: Rick Sorensen <rick.sorensen@gmail.com>
+Date:   Sun Nov 2 10:19:58 2025 -0600
+
+    mqttquick: catch no network exceptions
+```
+
+git log
+git tag
+git show
+```bash
+$ git show
+commit e6357ac6cf7af70acfdaa8b9b137ea1bfeb6c6de (HEAD -> main, origin/main)
+Author: Rick Sorensen <rick.sorensen@gmail.com>
+Date:   Mon Dec 1 11:40:25 2025 -0600
+
+    README: Add schematic image
+```
