@@ -18,9 +18,19 @@ Shared SPI bus with display.  Independent CS and IRQ pins
 + Capacitive touch screen with FT6206 
 Uses I2C bus.  Independent FT6206 nRST and IRQ pins.  The nRST must be low at power on then then go high for the touch screen to operate. 
 
-**The TFT Display wiring is common for all the displays**
+**The SPI Display wiring is common for all the displays**
 
-| Pin | StdUse | DispPin | ES32C3 | RP2    | NRF       |
+| XIAO Pin | StdUse | DispPin | Note |
+|:----|--------|---------|--------|
+| 1   |        | BKLT    | backlight |
+| 2   |        | RST     |  |
+| 3   |        | DC      | data or cmd |
+| 4   |        | CS      | display CS |
+| 9   | SCK    | SCK     |  |
+| 10  | MISO   | MISO    | SD and res touch only |
+| 11  | MOSI   | MOSI    | display data |
+
+| XIAO Pin | StdUse | DispPin | ES32C3 | RP2    | NRF       |
 |:----|--------|---------|--------|--------|-----------|
 | 1   |        | BKLT    | GPIO02 | GPIO26 | P02(0.26) |
 | 2   |        | RST     | GPIO03 | GPIO27 | P03(0.27) |
@@ -34,45 +44,52 @@ Note that the ESP32C3 uses GPIO09 as a strapping pin on startup.  If held low (e
 
 **For resistive Touch screen 2 more pins are used, and 3 are shared for SPI.**
 
-| Pin | StdUse | DispPin | ES32C3 | RP2    | NRF       |
+| XIAO Pin | StdUse | DispPin | ES32C3 | RP2    | NRF       |
 |:----|--------|---------|--------|--------|-----------|
 | 5   | SDA    | T_CS    | GPIO06 | GPIO06 | P04(0.04) |
 | 6   | SCL    | T_IRQ   | GPIO07 | GPIO07 | P05(0.05) |
 
-**For capacitive touch screen 4 more pins are used**
+Note that if SD access is needed, the SD CSPI pins must be connected.  For the display 7 pins are needed.  With shared touch SPI and jumpers 1 pin is needed for touch CS.  This leaves 3 unused data pins.  Thus a second SPI bus will not be available unless CS is fixed.  So SD options are:
 
-| Pin | StdUse | DispPin | ES32C3 | RP2    | NRF       |
++ New 3-pin SPI bus connected SD SPI pins, no touch interrupt and with SD CS hard wired low (not tried yet).
+
++ Connect SD SPI to above SPI bus, and attach SD CS to unused pin (not tried yet).
+
+**For capacitive touch screen 4 more pins are used but SPI is not used for touch**
+
+| XIAO Pin | StdUse | DispPin | ES32C3 | RP2    | NRF       |
 |:----|--------|---------|--------|--------|-----------|
 | 5   | SDA    | T_SDA   | GPIO06 | GPIO06 | P04(0.04) |
 | 6   | SCL    | T_SDL   | GPIO07 | GPIO07 | P05(0.05) |
 | 7   | TX     | T_IRQ   | GPIO21 | GPIO00 | P43(1.11) |
 | 8   | RX     | T_RST   | GPIO20 | GPIO01 | P44(1.12) |
 
+Note that if SD access is needed, the SD CS pin must be connected.  For the display 7 pins are needed.  Touch uses 4 pins. No more pins available.  If touch interrupt is not used, that pin would be available for SD CS. 
 
 
 
 The display SPI connections in order (center of breadboard roughly) are:
 
 
-| Loc | DispPin         |Note|
+| Loc | DispPin         |Color|Note|
 |:----|---|--|
 | x   | Vcc             |
 | x   | Gnd             |
-| 1   | CS              |
-| 2   | RST             |
-| 3   | DC              |
-| 4   | SDI/MOSI        |
-| 5   | SCK             |
-| 6   | BKLT            |
-| 7   | SDO/MISO        |
+| 1   | CS              |Orange|
+| 2   | RST             |Yellow|
+| 3   | DC              |Green|
+| 4   | SDI/MOSI        |Blue|
+| 5   | SCK             |Purple|
+| 6   | BKLT            |Grey|
+| 7   | SDO/MISO        |White|
 
 
-| *Loc* | *Label -> Jumper* <br> *Resistive Touch Pin*  | *Capacitive Touch Pin*  |
-|:--: | :------------------ | :-----------------|
-| 8  | T_CLK-->5(SCK)  | T_SCL |
-| 9  | T_CS            | T_RST |
-| 10 | T_DIN-->4(MOSI) | T_SDA |
-| 11 | T_DO-->7(MISO)  | T_IRQ |
+| *Loc* | *Label -> Jumper* <br> *Resistive Touch Pin*  | *Capacitive Touch Pin*  |Color|
+|:--: | :------------------ | :-----------------|:---|
+| 8  | T_CLK-->5(SCK)  | T_SCL |Black|
+| 9  | T_CS            | T_RST |Purple|
+| 10 | T_DIN-->4(MOSI) | T_SDA |Blue|
+| 11 | T_DO-->7(MISO)  | T_IRQ |Green|
 | 12 | T_IRQ           | SD_CS |
 
 

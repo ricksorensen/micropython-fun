@@ -16,20 +16,17 @@ Board List
 RJSBoards
 
 SEEED_XIAO_NRF52
-
+	+ use custom build to add 2MB external GPIO flash and decrease size of local flash file system to allow for ulab and more.
 	+ extra modules: st7789 ulab
+	+ manifest.py nrf: _boot, extmod/asyncio
 	+ manifest.basicnrf.py: ssd1306
 
 SEEED_XIAO_SAMD21
 
 + codesize=200K
 + extra modules: st7789 ulab
-+ manifest.basic.py:
-
-SEEED_XIAO_SAMD21VFS
-
-+ add support for FATFS for use with SD cards.
-+ same size/modules as base
++ manifest samd: _boot
++ manifest.basic.py: ssd1306
 
 SEEED_WIO_TERMINAL
 
@@ -39,10 +36,28 @@ SEEED_WIO_TERMINAL
 
 
 
-SEEED_XIAO_RP2040
+rjsboards/SEEED_XIAO_RP2040
 
 + add XIAO specific PIN names and change LED pin.
 
+rjsboards/SEEED_XIAO_RP2350
+
+
+rjsboards/SEEED_XIAO_RP2350
+RISCV
+
+
+unix/standard
+
+rjsboards/SEEED_XIAO_ESPSML2
+
+rjsboards/SEEED_XIAO_ESP32C3
+
+rjsboards/SEEED_XIAO_ESPSMLFS
+
+rjsboards/SEEED_XIAO_ESP32S3X
+
+ESP32_GENERIC_S3
 SEEED_XIAO_ESPSML2   COMPRESS OFF        too big
 
 
