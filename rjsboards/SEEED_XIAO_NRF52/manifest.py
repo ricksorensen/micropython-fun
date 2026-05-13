@@ -1,0 +1,5 @@
+module("_boot.py", base_path="$(BOARD_DIR)", opt=3)
+module("flashbdev.py", "$(BOARD_DIR)", opt=3)
+module("spiflash.py", "$(BOARD_DIR)", opt=3)
+include("$(MPY_DIR)/extmod/asyncio")
+require("ssd1306")
