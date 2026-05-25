@@ -3,7 +3,11 @@ MCU_VARIANT = nrf52
 MCU_SUB_VARIANT = nrf52840
 SOFTDEV_VERSION = 7.3.0
 SD=s140
-LD_FILES += boards/SEEED_XIAO_NRF52/XIAO_bootloader.ld boards/nrf52840_1M_256k.ld
+# no romfs
+#LD_FILES +=  boards/SEEED_XIAO_NRF52/XIAO_bootloader.ld boards/nrf52840_1M_256k.ld
+# romfs
+LD_FILES += boards/SEEED_XIAO_NRF52/XIAO_bootloader.ld $(BOARD_DIR)/nrfrjs_romfs.ld
+#
 FROZEN_MANIFEST ?= $(BOARD_DIR)/manifest.py
 NRF_DEFINES += -DNRF52840_XXAA
 
