@@ -44,7 +44,7 @@ def mountsd(baud=25_000_000, misop=None, soft=False):
         print(spi)
         print(os.listdir("/sd"))
         _LASTMOUNT = "/sd"
-    elif os.uname().machine.count("ESP32S3") and os.uname().machine.count("XIAO"):
+    elif os.uname().machine.count("ESP32S3"):  # and os.uname().machine.count("XIAO"):
         from machine import SoftSPI, SPI, Pin  # SDCard not sure how this works
         from sdcard import SDCard  # so use micropython sdcard
 
