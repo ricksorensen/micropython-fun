@@ -1,4 +1,23 @@
 # Recording microphones with I2S
+
+## XIAO breadboard config
+
+| Pin | Use | Note |
+| --- | --- | --- |
+| 1 | SD,Dout  | I2S Data |
+| 2 | Ain | Analog microphone input |
+| 3 | SD_CS | SD Card SPI CS |
+| 4 |  |  |
+| 5 | SCK,BCLK | I2S clock |
+| 6 | WS,LRCL | I2S Work clock |
+| 7 |
+| 8 | 
+| 9 | SD_CLK | SD Card SPI clock |
+| 10 | SD_MISO | SD Card SPI input |
+| 11 | SD_MOSI | SD Card SPI output |
+
+On the bread board SEL,L/R for the IMP441 is tied to ground.  SEL,L//R for the SPH0645 is jumper connected to 3.3V.
+
 Using a collection of Seeed XIAO mcu modules, I tested I2S recording with MEMS microphone.  After working through learning curves successful recordings were possible.  The major things learned:
 
 1. Read the datasheets on the devices.  It turns out there is a significant settling time after power up and initialization for the microphones to get to baseline and report repeatable data.
@@ -18,6 +37,7 @@ The evaluation used:
     * [SPH0645](https://www.mouser.com/datasheet/2/218/Knowles_corporation_sph0645lm4h_1_datasheet-2308959.pdf) microphone
 + SD Card module.  Evaluation used driver `sdcard.py` from micropython library, not the ESP32 hardward SDcard.
     * Adafruit 3.3V SDCard breakout [link](https://www.adafruit.com/product/4682)
+	* Adafruit 5V,3.3V SDCard breakout board+ [link](https://www.adafruit.com/product/254)
 	* Generic 3.3V SDCard breakout [link](https://www.amazon.com/gp/product/B0B779R5TZ?ie=UTF8&psc=1)
 + Breadboard test platform 
 
